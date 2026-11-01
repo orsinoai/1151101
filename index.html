@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10251d">
+  <title>冬日幸運拉霸</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Serif+TC:wght@600;700;900&display=swap');
+
+    :root {
+      --evergreen: #10251d;
+      --pine: #173a2c;
+      --cream: #fff6df;
+      --paper: #fffaf0;
+      --red: #c83d42;
+      --red-dark: #9c2e38;
+      --gold: #efbd54;
+      --ink: #1d2b24;
+      --muted: #8ca494;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--cream);
+      font-family: "DM Sans", sans-serif;
+      background: var(--evergreen);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 1.5px);
+      background-size: 34px 34px;
+    }
+    .page { width: min(1120px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { font-size: 2rem; filter: drop-shadow(0 5px 0 #092016); }
+    .brand-name { font-family: "Noto Serif TC", serif; font-weight: 900; letter-spacing: .08em; }
+    .brand-kicker { color: var(--gold); display: block; font-size: .68rem; letter-spacing: .22em; }
+    .header-note { color: #b7c8bb; font-size: .78rem; letter-spacing: .08em; }
+
+    main { padding: clamp(32px, 8vh, 80px) 0 54px; text-align: center; }
+    .eyebrow { color: var(--gold); font-size: .76rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; }
+    h1 { font-family: "Noto Serif TC", serif; font-size: clamp(2.5rem, 7vw, 5.4rem); line-height: 1.1; margin: 15px 0 12px; letter-spacing: .08em; }
+    .intro { color: #c6d2c8; margin: 0 auto 34px; font-size: .98rem; }
+    .machine-wrap { position: relative; max-width: 700px; margin: 0 auto; }
+    .machine {
+      position: relative; padding: 36px 34px 32px; border: 2px solid #edc46f; border-radius: 22px;
+      background: var(--red); box-shadow: 0 18px 0 #8e2a35, 0 25px 48px rgba(0,0,0,.26);
+    }
+    .machine::before, .machine::after { content: "✦"; position: absolute; color: #ffd879; font-size: 1.3rem; }
+    .machine::before { top: 16px; left: 22px; } .machine::after { top: 16px; right: 22px; }
+    .machine-top { color: #fff1bd; font-size: .7rem; font-weight: 700; letter-spacing: .28em; margin-bottom: 20px; }
+    .reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; padding: 13px; border-radius: 14px; background: #e8ba63; box-shadow: inset 0 3px 4px rgba(104,48,18,.3); }
+    .reel {
+      display: grid; place-items: center; height: clamp(110px, 20vw, 170px); overflow: hidden; border-radius: 9px;
+      background: var(--paper); color: var(--ink); font-size: clamp(3.2rem, 9vw, 5.5rem); box-shadow: inset 0 -7px 0 rgba(30,40,25,.07);
+    }
+    .reel.spinning { animation: reel-shake .16s linear infinite; }
+    @keyframes reel-shake { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+    .machine-status { min-height: 28px; margin: 23px 0 5px; color: #fff9df; font-family: "Noto Serif TC", serif; font-size: 1.1rem; font-weight: 700; }
+    .machine-status.win { color: #fff0a5; animation: pulse .7s ease-in-out infinite alternate; }
+    @keyframes pulse { to { transform: scale(1.05); } }
+    .sub-status { color: #ffd5c1; font-size: .78rem; }
+    .controls { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 12px; align-items: center; max-width: 570px; margin: 22px auto 0; }
+    .stat { padding: 10px 12px; border: 1px solid rgba(255,255,255,.25); border-radius: 9px; text-align: left; background: rgba(85,20,28,.2); }
+    .stat small { display: block; color: #ffd5c1; font-size: .67rem; letter-spacing: .1em; }
+    .stat strong { display: block; margin-top: 3px; color: #fff8df; font-size: 1.2rem; }
+    .spin-button { min-height: 58px; border: 0; border-radius: 10px; color: var(--ink); background: var(--gold); cursor: pointer; font: 700 1rem "Noto Serif TC", serif; letter-spacing: .15em; box-shadow: 0 5px 0 #bd8732; transition: transform .12s, box-shadow .12s, filter .12s; }
+    .spin-button:hover { filter: brightness(1.08); } .spin-button:active { transform: translateY(4px); box-shadow: 0 1px 0 #bd8732; }
+    .spin-button:disabled { cursor: wait; opacity: .65; }
+    .bet-controls { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 18px; color: #ffe8b6; font-size: .8rem; }
+    .bet-controls button { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.4); border-radius: 50%; color: #fff; background: transparent; cursor: pointer; font-size: 1.1rem; }
+    .bet-controls button:hover { background: rgba(255,255,255,.15); }
+    .instructions { display: flex; justify-content: center; gap: 30px; margin-top: 48px; color: #9db1a2; font-size: .75rem; }
+    .instructions span { display: inline-flex; align-items: center; gap: 7px; }
+    .instructions b { color: var(--gold); font-size: 1rem; }
+    footer { display: flex; justify-content: space-between; padding: 18px 0 28px; border-top: 1px solid rgba(255,255,255,.12); color: #738a7b; font-size: .7rem; letter-spacing: .08em; }
+    @media (max-width: 600px) {
+      .header-note { display: none; } header { padding-top: 20px; }
+      main { padding-top: 42px; } .machine { padding: 28px 13px 24px; border-radius: 16px; }
+      .reels { gap: 7px; padding: 8px; } .controls { grid-template-columns: repeat(2, 1fr); }
+      .spin-button { grid-column: 1 / -1; grid-row: 1; } .stat { grid-row: 2; }
+      .instructions { gap: 15px; flex-wrap: wrap; margin-top: 40px; }
+      footer { flex-direction: column; gap: 8px; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand"><span class="brand-mark">🎄</span><div><span class="brand-kicker">NORTH POLE CLUB</span><span class="brand-name">冬日幸運所</span></div></div>
+      <div class="header-note">一場雪，三個願望，剛剛好的好運。</div>
+    </header>
+
+    <main>
+      <div class="eyebrow">Christmas Lucky Draw · 2026</div>
+      <h1>冬日幸運拉霸</h1>
+      <p class="intro">拉下好運，看看今年的聖誕驚喜。</p>
+      <section class="machine-wrap" aria-label="聖誕拉霸機遊戲">
+        <div class="machine">
+          <div class="machine-top">✦ MERRY &amp; LUCKY ✦</div>
+          <div class="reels" aria-live="polite">
+            <div class="reel" id="reel-0">🎄</div><div class="reel" id="reel-1">🎁</div><div class="reel" id="reel-2">⭐</div>
+          </div>
+          <div class="machine-status" id="status">準備好迎接驚喜了嗎？</div>
+          <div class="sub-status" id="sub-status">三個相同圖案即可獲得獎金</div>
+          <div class="controls">
+            <div class="stat"><small>目前餘額</small><strong id="balance">1,000</strong></div>
+            <button class="spin-button" id="spin-button" type="button">開始旋轉</button>
+            <div class="stat"><small>本次獎金</small><strong id="prize">0</strong></div>
+          </div>
+          <div class="bet-controls"><button id="bet-down" type="button" aria-label="減少下注">−</button><span>每次下注 <strong id="bet">50</strong></span><button id="bet-up" type="button" aria-label="增加下注">＋</button></div>
+        </div>
+      </section>
+      <div class="instructions"><span><b>🎅</b> 三個相同：獎金 × 10</span><span><b>❄</b> 兩個相同：退回下注</span><span><b>⌨</b> 按空白鍵旋轉</span></div>
+    </main>
+    <footer><span>© 2026 NORTH POLE CLUB</span><span>PLAY WITH JOY · SHARE THE LUCK</span></footer>
+  </div>
+
+  <script>
+    const symbols = ['🎄', '🎁', '⭐', '🔔', '🍪', '🦌'];
+    const reels = [0, 1, 2].map((index) => document.getElementById(`reel-${index}`));
+    const spinButton = document.getElementById('spin-button');
+    const balanceText = document.getElementById('balance');
+    const prizeText = document.getElementById('prize');
+    const betText = document.getElementById('bet');
+    const statusText = document.getElementById('status');
+    const subStatusText = document.getElementById('sub-status');
+    let balance = 1000;
+    let bet = 50;
+    let spinning = false;
+
+    const updateDisplay = () => {
+      balanceText.textContent = balance.toLocaleString('zh-TW');
+      betText.textContent = bet.toLocaleString('zh-TW');
+    };
+
+    const spin = () => {
+      if (spinning || balance < bet) {
+        if (balance < bet) {
+          statusText.textContent = '好運需要一點補給！';
+          subStatusText.textContent = '餘額不足，請調低下注金額';
+        }
+        return;
+      }
+      spinning = true;
+      balance -= bet;
+      prizeText.textContent = '0';
+      statusText.classList.remove('win');
+      statusText.textContent = '幸運正在轉動…';
+      subStatusText.textContent = '聖誕老人正在準備驚喜';
+      spinButton.disabled = true;
+      updateDisplay();
+      reels.forEach((reel) => reel.classList.add('spinning'));
+      const results = reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]);
+      results.forEach((result, index) => {
+        setTimeout(() => {
+          reels[index].classList.remove('spinning');
+          reels[index].textContent = result;
+          if (index === results.length - 1) finishSpin(results);
+        }, 850 + index * 430);
+      });
+    };
+
+    const finishSpin = (results) => {
+      const counts = results.reduce((all, symbol) => ({ ...all, [symbol]: (all[symbol] || 0) + 1 }), {});
+      const highestMatch = Math.max(...Object.values(counts));
+      let prize = highestMatch === 3 ? bet * 10 : highestMatch === 2 ? bet : 0;
+      balance += prize;
+      prizeText.textContent = prize.toLocaleString('zh-TW');
+      if (highestMatch === 3) {
+        statusText.textContent = '聖誕奇蹟！大獎降臨！';
+        subStatusText.textContent = `恭喜獲得 ${prize.toLocaleString('zh-TW')} 點幸運金`;
+        statusText.classList.add('win');
+      } else if (highestMatch === 2) {
+        statusText.textContent = '差一點點，就快成功了！';
+        subStatusText.textContent = '兩個相同圖案，退回本次下注';
+      } else {
+        statusText.textContent = '雪花飄過，下一次會更好。';
+        subStatusText.textContent = '再試一次，幸運正在靠近';
+      }
+      spinning = false;
+      spinButton.disabled = false;
+      updateDisplay();
+    };
+
+    document.getElementById('bet-down').addEventListener('click', () => { bet = Math.max(10, bet - 10); updateDisplay(); });
+    document.getElementById('bet-up').addEventListener('click', () => { bet = Math.min(200, bet + 10); updateDisplay(); });
+    spinButton.addEventListener('click', spin);
+    document.addEventListener('keydown', (event) => { if (event.code === 'Space') { event.preventDefault(); spin(); } });
+    updateDisplay();
+  </script>
+</body>
+</html>
